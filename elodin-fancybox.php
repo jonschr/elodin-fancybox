@@ -3,7 +3,7 @@
 	Plugin Name: Elodin Fancybox
 	Plugin URI: https://elod.in
     Description: Just add data-fancybox or .popup to a link to make it a popup. Enqueues FancyBox everywhere.
-	Version: 0.1
+	Version: 0.1.1
     Author: Jon Schroeder
     Author URI: https://elod.in
 
@@ -45,3 +45,13 @@ function elodin_fancybox_enqueue() {
 	
 }
 
+// Set up galleries – no idea how this works, but it does
+// https://stackoverflow.com/questions/53763081/how-to-add-rel-atribute-to-the-links-in-gutenberg-gallery
+add_filter('the_content', 'elodin_fancybox_support_gutenberg_galleries');
+function elodin_fancybox_support_gutenberg_galleries($content) {
+       global $post;
+       $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+       $replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="'.$post->post_title.'"$6>';
+       $content = preg_replace($pattern, $replacement, $content);
+       return $content;
+}

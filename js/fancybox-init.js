@@ -4,4 +4,10 @@ jQuery(document).ready(function ($) {
         // Options will go here
     });
 
+    // $('.blocks-gallery-item a').fancybox({
+    //     // Options will go here
+    // });
+
+
+
 });
