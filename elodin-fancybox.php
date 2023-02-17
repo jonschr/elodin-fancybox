@@ -28,7 +28,7 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'ELODIN_FANCYBOX', dirname( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'ELODIN_FANCYBOX_VERSION', '0.1' );
+define ( 'ELODIN_FANCYBOX_VERSION', '0.1.1' );
 
 // Enqueue everything
 add_action( 'wp_enqueue_scripts', 'elodin_fancybox_enqueue' );
@@ -47,11 +47,11 @@ function elodin_fancybox_enqueue() {
 
 // Set up galleries – no idea how this works, but it does
 // https://stackoverflow.com/questions/53763081/how-to-add-rel-atribute-to-the-links-in-gutenberg-gallery
-add_filter('the_content', 'elodin_fancybox_support_gutenberg_galleries');
-function elodin_fancybox_support_gutenberg_galleries($content) {
-       global $post;
-       $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
-       $replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="'.$post->post_title.'"$6>';
-       $content = preg_replace($pattern, $replacement, $content);
-       return $content;
+add_filter( 'the_content', 'elodin_fancybox_support_gutenberg_galleries' );
+function elodin_fancybox_support_gutenberg_galleries( $content ) {
+    global $post;
+    $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+    $replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="'.$post->post_title.'"$6>';
+    $content = preg_replace( $pattern, $replacement, $content );
+    return $content;
 }
