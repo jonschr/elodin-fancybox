@@ -45,13 +45,33 @@ function elodin_fancybox_enqueue() {
 	
 }
 
-// Set up galleries – no idea how this works, but it does
+// Set up galleries
 // https://stackoverflow.com/questions/53763081/how-to-add-rel-atribute-to-the-links-in-gutenberg-gallery
 add_filter( 'the_content', 'elodin_fancybox_support_gutenberg_galleries' );
 function elodin_fancybox_support_gutenberg_galleries( $content ) {
     global $post;
+
     $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+
+	// <a: This part looks for the opening anchor tag.
+	// (.*?): This captures any attributes and their values within the anchor tag (non-greedily).
+	// href=('|\"): This looks for the href attribute with a value enclosed in single or double quotes.
+	// (.*?): This captures the content of the href attribute.
+	// .(bmp|gif|jpeg|jpg|png): This looks for a period followed by one of the specified image file extensions.
+	// ('|\"): This looks for the closing single or double quote after the image file extension.
+	// (.*?): This captures any additional attributes and their values within the anchor tag.
+
     $replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="'.$post->post_title.'"$6>';
+
+	// <a: This is the opening anchor tag.
+	// $1: This is a placeholder for the captured attributes and their values from the original tag.
+	// href=: This is the href attribute.
+	// $2: This is a placeholder for the quote (single or double) used in the original href attribute.
+	// $3.$4$5: This concatenates the captured content of the href attribute with the period and image file extension, preserving the original file path.
+	// data-fancybox="gallery": This adds a data-fancybox attribute with the value "gallery" to the anchor tag.
+	// title="'.$post->post_title.'": This adds a title attribute with the value of $post->post_title enclosed in double quotes.
+	// $6: This is a placeholder for any additional attributes and their values from the original tag.
+	
     $content = preg_replace( $pattern, $replacement, $content );
     return $content;
 }
