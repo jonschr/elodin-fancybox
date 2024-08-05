@@ -26,6 +26,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 // Plugin directory
 define( 'ELODIN_FANCYBOX', dirname( __FILE__ ) );
+define( 'ELODIN_FANCYBOX_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
 define ( 'ELODIN_FANCYBOX_VERSION', '0.1.2' );
@@ -75,3 +76,14 @@ function elodin_fancybox_support_gutenberg_galleries( $content ) {
     $content = preg_replace( $pattern, $replacement, $content );
     return $content;
 }
+
+// Load Plugin Update Checker.
+require ELODIN_FANCYBOX_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php';
+$update_checker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/jonschr/elodin-fancybox',
+	__FILE__,
+	'elodin-fancybox'
+);
+
+// Optional: Set the branch that contains the stable release.
+$update_checker->setBranch( 'master' );
