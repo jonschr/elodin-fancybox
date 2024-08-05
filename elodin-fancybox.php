@@ -3,7 +3,7 @@
 	Plugin Name: Elodin Fancybox
 	Plugin URI: https://elod.in
     Description: Just add data-fancybox or .popup to a link to make it a popup. Enqueues FancyBox everywhere.
-	Version: 0.1.1
+	Version: 0.1.2
     Author: Jon Schroeder
     Author URI: https://elod.in
 
@@ -28,20 +28,20 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'ELODIN_FANCYBOX', dirname( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'ELODIN_FANCYBOX_VERSION', '0.1.1' );
+define ( 'ELODIN_FANCYBOX_VERSION', '0.1.2' );
 
 // Enqueue everything
 add_action( 'wp_enqueue_scripts', 'elodin_fancybox_enqueue' );
 function elodin_fancybox_enqueue() {
 	
 	// Plugin styles
-    wp_enqueue_style( 'fancybox-theme', plugin_dir_url( __FILE__ ) . '/fancybox/dist/jquery.fancybox.min.css', array(), ELODIN_FANCYBOX_VERSION, 'screen' );
+    wp_enqueue_style( 'fancybox-theme', plugin_dir_url( __FILE__ ) . 'fancybox/dist/jquery.fancybox.min.css', array(), ELODIN_FANCYBOX_VERSION, 'screen' );
     
     // Script
-    wp_enqueue_script( 'fancybox-main', plugin_dir_url( __FILE__ ) . '/fancybox/dist/jquery.fancybox.min.js', array( 'jquery' ), ELODIN_FANCYBOX_VERSION, true );
+    wp_enqueue_script( 'fancybox-main', plugin_dir_url( __FILE__ ) . 'fancybox/dist/jquery.fancybox.min.js', array( 'jquery' ), ELODIN_FANCYBOX_VERSION, true );
 
     // Init the 'popup' class
-    wp_enqueue_script( 'fancybox-init', plugin_dir_url( __FILE__ ) . '/js/fancybox-init.js', array( 'fancybox-main' ), ELODIN_FANCYBOX_VERSION, true );
+    wp_enqueue_script( 'fancybox-init', plugin_dir_url( __FILE__ ) . 'js/fancybox-init.js', array( 'fancybox-main' ), ELODIN_FANCYBOX_VERSION, true );
 	
 }
 
