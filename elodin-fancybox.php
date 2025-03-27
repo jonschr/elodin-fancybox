@@ -3,7 +3,7 @@
 	Plugin Name: Elodin Fancybox
 	Plugin URI: https://elod.in
     Description: Just add data-fancybox or .popup to a link to make it a popup. Enqueues FancyBox everywhere.
-	Version: 0.1.2
+	Version: 0.1.3
     Author: Jon Schroeder
     Author URI: https://elod.in
 
@@ -29,7 +29,7 @@ define( 'ELODIN_FANCYBOX', dirname( __FILE__ ) );
 define( 'ELODIN_FANCYBOX_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'ELODIN_FANCYBOX_VERSION', '0.1.2' );
+define ( 'ELODIN_FANCYBOX_VERSION', '0.1.3' );
 
 // Enqueue everything
 add_action( 'wp_enqueue_scripts', 'elodin_fancybox_enqueue' );
@@ -49,33 +49,20 @@ function elodin_fancybox_enqueue() {
 // Set up galleries
 // https://stackoverflow.com/questions/53763081/how-to-add-rel-atribute-to-the-links-in-gutenberg-gallery
 add_filter( 'the_content', 'elodin_fancybox_support_gutenberg_galleries' );
-function elodin_fancybox_support_gutenberg_galleries( $content ) {
-    global $post;
+function elodin_fancybox_support_gutenberg_galleries($content) {
+	global $post;
 
-    $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+	$pattern = '/<a([^>]*)href=([\'"])(.*?)\.(bmp|gif|jpeg|jpg|png)(\2)([^>]*)><img([^>]*)src=([\'"])(.*?)\.(bmp|gif|jpeg|jpg|png)(\8)([^>]*)><\/a>/i';
 
-	// <a: This part looks for the opening anchor tag.
-	// (.*?): This captures any attributes and their values within the anchor tag (non-greedily).
-	// href=('|\"): This looks for the href attribute with a value enclosed in single or double quotes.
-	// (.*?): This captures the content of the href attribute.
-	// .(bmp|gif|jpeg|jpg|png): This looks for a period followed by one of the specified image file extensions.
-	// ('|\"): This looks for the closing single or double quote after the image file extension.
-	// (.*?): This captures any additional attributes and their values within the anchor tag.
+	$replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="' . 
+		$post->post_title . 
+		'"$6><img$7src=$8$9.$10$11$12></a>';
 
-    $replacement = '<a$1href=$2$3.$4$5 data-fancybox="gallery" title="'.$post->post_title.'"$6>';
+	$content = preg_replace($pattern, $replacement, $content);
 
-	// <a: This is the opening anchor tag.
-	// $1: This is a placeholder for the captured attributes and their values from the original tag.
-	// href=: This is the href attribute.
-	// $2: This is a placeholder for the quote (single or double) used in the original href attribute.
-	// $3.$4$5: This concatenates the captured content of the href attribute with the period and image file extension, preserving the original file path.
-	// data-fancybox="gallery": This adds a data-fancybox attribute with the value "gallery" to the anchor tag.
-	// title="'.$post->post_title.'": This adds a title attribute with the value of $post->post_title enclosed in double quotes.
-	// $6: This is a placeholder for any additional attributes and their values from the original tag.
-	
-    $content = preg_replace( $pattern, $replacement, $content );
-    return $content;
+	return $content;
 }
+add_filter('the_content', 'elodin_fancybox_support_gutenberg_galleries');
 
 // Load Plugin Update Checker.
 require ELODIN_FANCYBOX_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php';
